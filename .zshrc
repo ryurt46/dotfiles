@@ -134,6 +134,6 @@ alias python="python3"
 alias py="python3"
 alias ex="exit"
 
-#export TERM="xterm-256color"
+export TERM="xterm-256color"
 
 export PATH=$PATH:/usr/local/nusmv/bin
