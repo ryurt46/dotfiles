@@ -123,7 +123,7 @@ setopt PROMPT_SUBST
 # I used to have %F{31} for $PATH
 NEWLINE=$'\n'
 #PROMPT="%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b$(git_prompt_info)${NEWLINE}%F{255}└──╼%f "
-PROMPT='%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f '
+PROMPT='%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b ── $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f '
 
 #PROMPT='%B%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f%b '
 RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
