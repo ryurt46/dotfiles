@@ -112,9 +112,9 @@ parse_git_branch() {
 
         # Check for uncommitted changes
         if [[ -n $(git status --porcelain 2> /dev/null) ]]; then
-            echo "%F{130}‹${branch}*›%f"  # Orange color for branch with uncommitted changes
+            echo "── %F{130}‹${branch}*›%f"  # Orange color for branch with uncommitted changes
         else
-            echo "%F{130}‹${branch}›%f"  # Orange color for branch without uncommitted changes
+            echo "── %F{130}‹${branch}›%f"  # Orange color for branch without uncommitted changes
         fi
     fi
 }
@@ -124,7 +124,7 @@ setopt PROMPT_SUBST
 # This prompt is designed by Benoit Baudry, prev KTH Prof.
 NEWLINE=$'\n'
 #PROMPT="%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b$(git_prompt_info)${NEWLINE}%F{255}└──╼%f "
-PROMPT='%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b ── $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f '
+PROMPT='%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f '
 
 #PROMPT='%B%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f%b '
 RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
