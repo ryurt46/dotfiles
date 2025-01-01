@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Validate Shell Scripts') {
+            steps {
+                sh 'find . -name "*.sh" -exec bash -n {} \\;'
+            }
+        }
+
+        stage('Validate Configurations') {
+            steps {
+                sh 'zsh -n ~/.zshrc'
+            }
+        }
+
+        stage('Simulate Deployment') {
+            steps {
+                sh './deploy.sh --dry-run'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build succeeded!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
+}
