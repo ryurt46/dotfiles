@@ -124,9 +124,9 @@ setopt PROMPT_SUBST
 # This prompt is designed by Benoit Baudry, prev KTH Prof.
 NEWLINE=$'\n'
 #PROMPT="%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b$(git_prompt_info)${NEWLINE}%F{255}└──╼%f "
-PROMPT='%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f '
+#PROMPT='%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f '
 
-#PROMPT='%B%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f%b '
+PROMPT='%B%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f%b '
 RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
 
 alias emacs="emacs -nw"
@@ -135,6 +135,7 @@ alias python="python3"
 alias py="python3"
 alias ex="exit"
 alias cl="clear"
+bindkey "^H" backward-kill-word
 
 export TERM="xterm-256color"
 
