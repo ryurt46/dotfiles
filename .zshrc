@@ -119,22 +119,30 @@ parse_git_branch() {
     fi
 }
 setopt PROMPT_SUBST
-# First working
 # I used to have %F{31} for $PATH
-# This prompt is designed by Benoit Baudry, prev KTH Prof.
-NEWLINE=$'\n'
+# This prompt is designed by Benoit Baudry.
 #PROMPT="%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b$(git_prompt_info)${NEWLINE}%F{255}└──╼%f "
 #PROMPT='%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f '
 
+NEWLINE=$'\n'
+#Left Prompt
 PROMPT='%B%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f%b '
+
+#Right Prompt
 RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
 
+#Aliases
 alias emacs="emacs -nw"
 alias v="nvim"
 alias python="python3"
 alias py="python3"
 alias ex="exit"
 alias cl="clear"
+alias ls='ls --color=auto'
+alias ll='ls -la'
+alias la='ls -A'
+
+# Binds
 bindkey "^H" backward-kill-word
 
 export TERM="xterm-256color"
