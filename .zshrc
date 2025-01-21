@@ -127,9 +127,11 @@ setopt PROMPT_SUBST
 NEWLINE=$'\n'
 #Left Prompt
 PROMPT='%B%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f%b '
+#PROMPT='%B%F{255}%F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f%f%b'
 
 #Right Prompt
-RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
+#RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
+RPROMPT=""
 
 #Aliases
 alias emacs="emacs -nw"
