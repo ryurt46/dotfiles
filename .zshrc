@@ -112,9 +112,9 @@ parse_git_branch() {
 
         # Check for uncommitted changes
         if [[ -n $(git status --porcelain 2> /dev/null) ]]; then
-            echo "── %F{130}‹${branch}*›%f"  # Orange color for branch with uncommitted changes
+            echo "── %F{130}‹${branch}*›%f "  # Orange color for branch with uncommitted changes
         else
-            echo "── %F{130}‹${branch}›%f"  # Orange color for branch without uncommitted changes
+            echo "── %F{130}‹${branch}›%f "  # Orange color for branch without uncommitted changes
         fi
     fi
 }
@@ -125,12 +125,16 @@ setopt PROMPT_SUBST
 #PROMPT='%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f '
 
 NEWLINE=$'\n'
-#Left Prompt
-PROMPT='%B%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f%b '
-#PROMPT='%B%F{255}%F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f%f%b'
+# Left Prompt 
+#PROMPT='%B%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f%b '
 
-#Right Prompt
+# Left Prompt - one liner
+PROMPT='%B%F{255}%F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f%f%b'
+
+# Right Prompt - Time and date
 #RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
+
+# Right Prompt - Empty
 RPROMPT=""
 
 #Aliases
