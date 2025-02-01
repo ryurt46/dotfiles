@@ -1,3 +1,8 @@
+# Important things
+source $HOME/.oh-my-zsh/oh-my-zsh.sh
+setopt PROMPT_SUBST
+
+
 # Git prompt
 parse_git_branch() {
     # Check if the directory is inside a git repository
@@ -36,9 +41,9 @@ alias py="python3"
 alias ex="exit"
 alias cl="clear"
 alias ls='ls --color=auto'
-alias ll='ls -la --color=auto'
-alias la='ls -A --color=auto'
-alias lal="ls -al --color=auto"
+alias ll='ls -la'
+alias la='ls -A'
+alias lal='ls -al'
 
 # Binds
 bindkey "^H"      backward-kill-word  # Ctrl + <backspace>
@@ -46,6 +51,5 @@ bindkey "^[^?"    backward-kill-word  # Alt + <backspace>
 
 # Exports
 export TERM="xterm-256color"
-export PATH=$PATH:/usr/local/nusmv/bin
 export PATH="/usr/local/bin:$PATH"
 export EDITOR=/usr/bin/nvim
