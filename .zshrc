@@ -41,7 +41,7 @@ alias la='ls -A --color=auto'
 alias lal="ls -al --color=auto"
 
 # Binds
-bindkey "^H" backward-kill-word
+bindkey "^H"      backward-kill-word  # Ctrl + <backspace>
 bindkey "^[^?"    backward-kill-word  # Alt + <backspace>
 
 # Exports
