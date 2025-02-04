@@ -44,6 +44,7 @@ alias ls='ls --color=auto'
 alias ll='ls -la'
 alias la='ls -A'
 alias lal='ls -al'
+alias lt='ls -lt'
 
 # Binds
 bindkey "^H"      backward-kill-word  # Ctrl + <backspace>
