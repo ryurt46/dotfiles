@@ -1,6 +1,6 @@
 # Important things
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
-setopt PROMPT_SUBST
+#setopt PROMPT_SUBST
 
 
 # Git prompt
@@ -31,7 +31,7 @@ PROMPT='%B%F{255}%F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branc
 #RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
 
 # Right Prompt - Empty
-RPROMPT=""
+#RPROMPT=""
 
 #Aliases
 alias emacs="emacs -nw"
@@ -54,3 +54,7 @@ bindkey "^[^?"    backward-kill-word  # Alt + <backspace>
 export TERM="xterm-256color"
 export PATH="/usr/local/bin:$PATH"
 export EDITOR=/usr/bin/nvim
+#export BROWSER=firefox
+export GOPATH=/usr/local/gopath
+export PATH=$GOPATH/bin:$PATH
+export PATH=/usr/local/go/bin:$PATH
