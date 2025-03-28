@@ -291,7 +291,20 @@ require('lazy').setup({
       require('nvim-tree').setup {}
     end,
   },
-
+  {
+    'ray-x/go.nvim',
+    dependencies = { -- optional packages
+      'ray-x/guihua.lua',
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      require('go').setup()
+    end,
+    event = { 'CmdlineEnter' },
+    ft = { 'go', 'gomod' },
+    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+  },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -950,18 +963,20 @@ require('lazy').setup({
   -- change the command in the config to whatever the name of that colorscheme is.
   --
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-  'folke/tokyonight.nvim',
-  priority = 1000, -- Make sure to load this before all the other start plugins.
-  init = function()
-    -- Load the colorscheme here.
-    -- Like many other themes, this one has different styles, and you could load
-    -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-    vim.cmd.colorscheme 'tokyonight-night'
-
-    -- You can configure highlights by doing something like:
-    vim.cmd.hi 'Comment gui=none'
-  end,
+  --'folke/tokyonight.nvim',
+  --priority = 1000, -- Make sure to load this before all the other start plugins.
+  --init = function()
+  -- Load the colorscheme here.
+  -- Like many other themes, this one has different styles, and you could load
+  -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+  --vim.cmd.colorscheme 'molokai'
+  -- You can configure highlights by doing something like:
+  --vim.cmd.hi 'Comment gui=none'
+  --end,
   --},
+
+  ----- MOLOKAI
+  --[[
   {
     -- Use the Molokai colorscheme
     'tomasr/molokai',
@@ -970,6 +985,45 @@ require('lazy').setup({
       vim.cmd.colorscheme 'molokai'
     end,
   },
+  ]]
+  ----- ONE DARK
+  {
+    'olimorris/onedarkpro.nvim',
+    priority = 1000, -- Ensure it loads first
+    init = function()
+      vim.cmd.colorscheme 'onedark'
+    end,
+  },
+  ---- ROSE PINE
+  --[[
+  {
+	  "rose-pine/neovim",
+    priority = 1000,
+	  init = function()
+		  vim.cmd.colorscheme 'rose-pine'
+	  end,
+  },
+]]
+
+  --[[ DRACULA
+  {
+    'Mofiqul/dracula.nvim',
+    priority = 1000, -- Ensure it loads first
+    init = function()
+      vim.cmd.colorscheme 'dracula'
+    end,
+  },
+]]
+
+  --- VSCODE DARK
+  --[[
+  {
+    'Mofiqul/vscode.nvim',
+    priority = 1000,
+    init = function()
+      vim.cmd.colorscheme 'vscode'
+    end,
+  },]]
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
