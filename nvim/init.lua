@@ -189,8 +189,7 @@ vim.opt.scrolloff = 10
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('n', '<F5>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-
+vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -255,6 +254,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  defaults = { lazy = true },
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   -- NOTE: Plugins can also be added by using a table,
@@ -265,21 +265,81 @@ require('lazy').setup({
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
-  --
-  -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
+  {
+    'jay-babu/mason-nvim-dap.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'mfussenegger/nvim-dap',
+    },
     opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
+      handlers = {},
     },
   },
+  {
+    'mfussenegger/nvim-dap',
+    event = 'InsertEnter',
+    dependencies = {
+      {
+        'mfussenegger/nvim-dap-python',
+        config = function()
+          local python_path = vim.fn.system('which python3'):gsub('\n', '')
 
+          require('dap-python').setup(python_path)
+        end,
+      },
+      {
+        'rcarriga/nvim-dap-ui',
+        dependencies = {
+          'nvim-neotest/nvim-nio',
+        },
+        config = function()
+          require('dapui').setup()
+        end,
+      },
+      {
+        'theHamsta/nvim-dap-virtual-text',
+        config = function()
+          require('nvim-dap-virtual-text').setup()
+        end,
+      },
+    },
+    config = function()
+      -- Key mappings for DAP
+      vim.api.nvim_set_keymap('n', '<F4>', ":lua require('dapui').toggle()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<F5>', ":lua require'dap'.continue()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<F7>', ":lua require'dap'.step_over()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<F8>', ":lua require'dap'.step_into()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<F9>', ":lua require'dap'.step_out()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<leader>b', ":lua require'dap'.toggle_breakpoint()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap(
+        'n',
+        '<leader>B',
+        ':lua require\'dap\'.set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>',
+        { noremap = true, silent = true }
+      )
+      -- vim.api.nvim_set_keymap('n', '<leader>lp', ':lua require\'dap\'.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<leader>dr', ":lua require'dap'.repl.open()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<leader>dl', ":lua require'dap'.run_last()<CR>", { noremap = true, silent = true })
+    end,
+  },
+  {
+    'leoluz/nvim-dap-go',
+    ft = 'go',
+    dependencies = 'mfussenegger/nvim-dap',
+    config = function()
+      require('dap-go').setup()
+    end,
+  },
+  {
+    'nicholasmata/nvim-dap-cs',
+    dependencies = { 'mfussenegger/nvim-dap' },
+    config = function()
+      require('dap-cs').setup {
+        netcoredbg_path = '/opt/netcoredbg/netcoredbg', -- Ensure this points to your NetCoreDbg binary
+      }
+    end,
+  },
   {
     'nvim-tree/nvim-tree.lua',
     version = '*',
@@ -737,6 +797,7 @@ require('lazy').setup({
       local servers = {
         --jdtls = {},
         clangd = {},
+        codelldb = {},
         gopls = {},
         pyright = {},
         rust_analyzer = {},
@@ -746,7 +807,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
 
         lua_ls = {
@@ -764,7 +825,6 @@ require('lazy').setup({
           },
         },
       }
-
       -- Ensure the servers and tools above are installed
       --
       -- To check the current status of installed tools and/or manually install
@@ -798,7 +858,6 @@ require('lazy').setup({
       }
     end,
   },
-
   { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -1105,7 +1164,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
