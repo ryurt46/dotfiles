@@ -1,0 +1,4 @@
+syntax keyword typescriptGlobal containedin=typescriptIdentifierName JSON nextgroup=typescriptGlobalJSONDot,typescriptFuncCallArg
+syntax match   typescriptGlobalJSONDot /\./ contained nextgroup=typescriptJSONStaticMethod,typescriptProp
+syntax keyword typescriptJSONStaticMethod contained parse stringify nextgroup=typescriptFuncCallArg
+hi def link typescriptJSONStaticMethod Keyword

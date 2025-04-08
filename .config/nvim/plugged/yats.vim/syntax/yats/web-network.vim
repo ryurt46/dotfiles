@@ -1,0 +1,5 @@
+syntax keyword typescriptGlobal containedin=typescriptIdentifierName NetworkInformation
+syntax keyword typescriptBOMNetworkProp contained downlink downlinkMax effectiveType
+syntax keyword typescriptBOMNetworkProp contained rtt type
+syntax cluster props add=typescriptBOMNetworkProp
+hi def link typescriptBOMNetworkProp Keyword
