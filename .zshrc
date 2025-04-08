@@ -14,7 +14,7 @@ parse_git_branch() {
         if [[ -n $(git status --porcelain 2> /dev/null) ]]; then
             echo "── %F{130}‹${branch}*›%f "  # Orange color for branch with uncommitted changes
         else
-            echo "── %F{red}‹${branch}›%f "  # Orange color for branch without uncommitted changes
+            echo "── %F{130}‹${branch}›%f "  # Orange color for branch without uncommitted changes
         fi
     fi
 }
