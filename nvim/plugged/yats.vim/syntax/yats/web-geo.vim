@@ -1,0 +1,5 @@
+syntax keyword typescriptGlobal containedin=typescriptIdentifierName Geolocation
+syntax keyword typescriptGeolocationMethod contained getCurrentPosition watchPosition nextgroup=typescriptFuncCallArg
+syntax keyword typescriptGeolocationMethod contained clearWatch nextgroup=typescriptFuncCallArg
+syntax cluster props add=typescriptGeolocationMethod
+hi def link typescriptGeolocationMethod Keyword
