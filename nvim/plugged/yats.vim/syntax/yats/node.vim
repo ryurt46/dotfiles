@@ -1,8 +1,0 @@
-syntax keyword typescriptNodeGlobal containedin=typescriptIdentifierName global process
-syntax keyword typescriptNodeGlobal containedin=typescriptIdentifierName console Buffer
-syntax keyword typescriptNodeGlobal containedin=typescriptIdentifierName module exports
-syntax keyword typescriptNodeGlobal containedin=typescriptIdentifierName setTimeout
-syntax keyword typescriptNodeGlobal containedin=typescriptIdentifierName clearTimeout
-syntax keyword typescriptNodeGlobal containedin=typescriptIdentifierName setInterval
-syntax keyword typescriptNodeGlobal containedin=typescriptIdentifierName clearInterval
-hi def link typescriptNodeGlobal Structure
