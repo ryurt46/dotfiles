@@ -1,0 +1,5 @@
+syntax keyword typescriptGlobal containedin=typescriptIdentifierName Intl
+syntax keyword typescriptIntlMethod contained Collator DateTimeFormat NumberFormat nextgroup=typescriptFuncCallArg
+syntax keyword typescriptIntlMethod contained PluralRules nextgroup=typescriptFuncCallArg
+syntax cluster props add=typescriptIntlMethod
+hi def link typescriptIntlMethod Keyword
