@@ -49,7 +49,7 @@ alias ll='ls -la'
 alias la='ls -A'
 alias lal='ls -al'
 alias lt='ls -lt'
-
+alias ltr='ls -ltr'
 # Binds
 bindkey "^H"      backward-kill-word  # Ctrl + <backspace>
 bindkey "^[^?"    backward-kill-word  # Alt + <backspace>
