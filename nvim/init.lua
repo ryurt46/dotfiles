@@ -1,3 +1,7 @@
+---@diagnostic disable-next-line
+vim.g.have_nerd_font = true
+vim.deprecate = function() end
+
 -- Makes it "full screen"
 vim.api.nvim_create_autocmd({ 'UIEnter', 'ColorScheme' }, {
   callback = function()
@@ -23,6 +27,17 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.shiftwidth = 4
     vim.opt_local.softtabstop = 4
     vim.opt_local.expandtab = false -- Ensure tabs are used instead of spaces
+  end,
+})
+
+-- Cpp things
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'cpp', 'cc', 'c', 'h', 'hpp', 'hh' },
+  callback = function()
+    vim.opt_local.tabstop = 4 -- How wide a <Tab> looks
+    vim.opt_local.shiftwidth = 4 -- How much indentation to insert
+    vim.opt_local.softtabstop = 4 -- How many spaces a tab key inserts
+    vim.opt_local.expandtab = true -- Use spaces, not tabs
   end,
 })
 
@@ -183,6 +198,30 @@ vim.opt.cursorline = false
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- select and move
+vim.keymap.set('x', 'J', ":move '>+1<CR>gv=gv")
+vim.keymap.set('x', 'K', ":move '<-2<CR>gv=gv")
+
+-- Show diagnostic
+vim.keymap.set('n', '<F3>', vim.diagnostic.goto_next, { desc = 'Nästa diagnostic' })
+
+-- Gå till föregående diagnostic (F2)
+vim.keymap.set('n', '<F2>', vim.diagnostic.goto_prev, { desc = 'Föregående diagnostic' })
+
+-- C++ auto definition
+-- Byt mellan .cpp och .h
+local map = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+map('n', '<leader>ch', '<Cmd>SwitchSourceAndHeader<CR>', opts)
+-- Generera implementation i .cpp
+map('n', '<leader>ci', '<Cmd>ImplementInSource<CR>', opts)
+-- Generera implementation i header
+map('n', '<leader>co', '<Cmd>ImplementOutOfClass<CR>', opts)
+-- Gå till headerfil
+map('n', '<leader>gh', '<Cmd>GotoHeaderFile<CR>', opts)
+-- Generera från markerat block
+map('v', '<leader>ci', '<Cmd>lua require("cppassist").ImplementInSourceInVisualMode()<CR>', opts)
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -257,6 +296,7 @@ require('lazy').setup({
   defaults = { lazy = true },
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'NMAC427/guess-indent.nvim',
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -265,6 +305,18 @@ require('lazy').setup({
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
+  {
+    'p00f/clangd_extensions.nvim',
+    ft = { 'c', 'cc', 'cpp', 'objc', 'objcpp', 'cuda' },
+    config = function()
+      require('clangd_extensions').setup {
+        inlay_hints = {
+          only_current_line = true,
+          only_current_line_autocmd = { 'CursorHold' },
+        },
+      }
+    end,
+  },
   {
     'jay-babu/mason-nvim-dap.nvim',
     event = 'VeryLazy',
@@ -371,6 +423,34 @@ require('lazy').setup({
   },
 
   { 'tpope/vim-fugitive' },
+  {
+    'Kohirus/cppassist.nvim',
+    lazy = false, -- Viktigt: ladda direkt
+    config = function()
+      require('cppassist').setup {
+        switch_sh = {
+          include_dirs = { '.', '..' },
+          exclude_dirs = {},
+          search_flags = '-tf -s -L',
+          return_type = {
+            int = '0',
+            short = '0',
+            long = '0',
+            char = '0',
+            double = '0.0',
+            float = '0.0',
+            bool = 'false',
+            pointer = 'nullptr',
+          },
+        },
+        goto_header = {
+          include_dirs = { '.', '..', '/usr/include', '/usr/local/include', '~' },
+          exclude_dirs = {},
+          search_flags = '-tf -s',
+        },
+      }
+    end,
+  },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -532,7 +612,16 @@ require('lazy').setup({
           },
 
           lualine_c = { 'filename' },
-          lualine_x = { 'encoding', 'fileformat', 'filetype' },
+          -- lualine_x = { 'encoding', 'fileformat', 'filetype' },
+          lualine_x = {
+            {
+              function()
+                return vim.bo.fileformat
+              end,
+            },
+            'encoding',
+            'filetype',
+          },
           lualine_y = { 'progress' },
           lualine_z = {
             function()
@@ -637,7 +726,17 @@ require('lazy').setup({
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { 'williamboman/mason.nvim', opts = {} },
+
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = {
+            'clangd',
+            'clang-format',
+            'codelldb',
+          },
+        },
+      },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -648,6 +747,29 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
+      local lspconfig = require 'lspconfig'
+
+      lspconfig.clangd.setup {
+        on_attach = function(client, bufnr)
+          -- exempel: tangentbordsgenvägar, format-on-save osv.
+          local nmap = function(keys, func, desc)
+            vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+          end
+
+          nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+          nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+          -- lägg till fler om du vill
+        end,
+        capabilities = capabilities,
+        cmd = {
+          'clangd',
+          '--background-index',
+          '--clang-tidy',
+          '--completion-style=detailed',
+          '--cross-file-rename',
+        },
+      }
+
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -767,7 +889,23 @@ require('lazy').setup({
           end
         end,
       })
-
+      vim.diagnostic.config {
+        severity_sort = true,
+        float = { border = 'rounded', source = 'if_many' },
+        underline = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '󰅚 ',
+            [vim.diagnostic.severity.WARN] = '󰀪 ',
+            [vim.diagnostic.severity.INFO] = '󰋽 ',
+            [vim.diagnostic.severity.HINT] = '󰌶 ',
+          },
+        },
+        virtual_text = {
+          prefix = '■',
+          spacing = 0,
+        },
+      }
       -- Change diagnostic symbols in the sign column (gutter)
       -- if vim.g.have_nerd_font then
       --   local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
@@ -795,7 +933,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        --jdtls = {},
+        jdtls = {},
         clangd = {},
         codelldb = {},
         gopls = {},
@@ -840,7 +978,14 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        'stylua', -- Lua formatter
+        'gopls', -- Go language server
+        'clangd', -- C/C++ language server
+        'clang-format', -- C/C++ formatter
+        'codelldb', -- C/C++ debugger
+        'jdtls', -- Java language server
+        'pyright', -- Python LSP
+        'rust-analyzer', -- Rust LSP
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -1046,6 +1191,7 @@ require('lazy').setup({
   },
   ]]
   ----- ONE DARK
+  --[[ 
   {
     'olimorris/onedarkpro.nvim',
     priority = 1000, -- Ensure it loads first
@@ -1053,6 +1199,8 @@ require('lazy').setup({
       vim.cmd.colorscheme 'onedark'
     end,
   },
+]]
+
   ---- ROSE PINE
   --[[
   {
@@ -1082,7 +1230,28 @@ require('lazy').setup({
     init = function()
       vim.cmd.colorscheme 'vscode'
     end,
-  },]]
+  },
+  ]]
+  --- HEMISU
+  --[[
+  {
+    'noahfrederick/vim-hemisu',
+    priority = 1000,
+    init = function()
+      vim.opt.background = 'dark'
+      vim.cmd.colorscheme 'hemisu'
+    end,
+  },
+    ]]
+
+  {
+    'tomasiser/vim-code-dark',
+    priority = 1000,
+    init = function()
+      vim.opt.background = 'dark'
+      vim.cmd.colorscheme 'codedark'
+    end,
+  },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
@@ -1130,7 +1299,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'cpp', 'go' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'cpp', 'go', 'make', 'asm' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
