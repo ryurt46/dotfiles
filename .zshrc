@@ -1,5 +1,6 @@
 # Important things
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
+ZSH_THEME="robbyrussell"
 #setopt PROMPT_SUBST
 plugins=(git)
 
@@ -26,7 +27,7 @@ NEWLINE=$'\n'
 #PROMPT='%B%F{255}%F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f%f%b'
 
 # Path uses the system color of blue
-PROMPT='%B%F{green}%F{green}%B%n@%m%f%b %F{255}── %F{blue}%B%~%f%b $(parse_git_branch)%f%f%b'
+#PROMPT='%B%F{green}%F{green}%B%n@%m%f%b %F{255}── %F{blue}%B%~%f%b $(parse_git_branch)%f%f%b'
 
 #PROMPT='${debian_chroot:+($debian_chroot)}%B%F{green}%n@%m%f:%F{blue}%~%f\$%b '
 
@@ -35,7 +36,7 @@ PROMPT='%B%F{green}%F{green}%B%n@%m%f%b %F{255}── %F{blue}%B%~%f%b $(parse_g
 #RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
 
 # Right Prompt - Empty
-RPROMPT=""
+#RPROMPT=""
 
 #Aliases
 alias emacs="emacs -nw"
@@ -43,13 +44,14 @@ alias v="nvim"
 alias python="python3"
 alias py="python3"
 alias ex="exit"
-#alias cl="clear"
 alias ls='ls --color=auto'
 alias ll='ls -la'
 alias la='ls -A'
 alias lal='ls -al'
 alias lt='ls -lt'
 alias ltr='ls -ltr'
+alias bat='batcat'
+
 # Binds
 bindkey "^H"      backward-kill-word  # Ctrl + <backspace>
 bindkey "^[^?"    backward-kill-word  # Alt + <backspace>
@@ -63,3 +65,5 @@ export GOPATH=/usr/local/gopath
 export PATH=$GOPATH/bin:$PATH
 export PATH=/usr/local/go/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
+
+
