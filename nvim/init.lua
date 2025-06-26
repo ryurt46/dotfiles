@@ -30,20 +30,10 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- Cpp things
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'cpp', 'cc', 'c', 'h', 'hpp', 'hh' },
-  callback = function()
-    vim.opt_local.tabstop = 4 -- How wide a <Tab> looks
-    vim.opt_local.shiftwidth = 4 -- How much indentation to insert
-    vim.opt_local.softtabstop = 4 -- How many spaces a tab key inserts
-    vim.opt_local.expandtab = true -- Use spaces, not tabs
-  end,
-})
-
 vim.keymap.set('n', '<A-.>', '<Cmd>BufferNext<CR>', { desc = 'Next buffer' })
 vim.keymap.set('n', '<A-,>', '<Cmd>BufferPrevious<CR>', { desc = 'Previous buffer' })
 vim.keymap.set('n', '<A-m>', '<Cmd>BufferClose<CR>', { desc = 'Close current buffer' })
+vim.keymap.set('n', '<M-d>', '<Cmd>BufferClose<CR>', { desc = 'Close buffer' })
 
 vim.keymap.set('n', '<A-->', function()
   local current = vim.opt.showtabline:get()
@@ -319,7 +309,7 @@ require('lazy').setup({
   --    require('gitsigns').setup({ ... })
   { 'nvim-tree/nvim-web-devicons', opts = {} },
 
-  --[[ VSCODE TOP FILE INDICATOR
+  -- VSCODE TOP FILE INDICATOR
   {
     'romgrk/barbar.nvim',
     dependencies = {
@@ -328,6 +318,7 @@ require('lazy').setup({
     },
     init = function()
       vim.g.barbar_auto_setup = false
+      vim.opt.showtabline = 0
     end,
     opts = {
       -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
@@ -337,18 +328,33 @@ require('lazy').setup({
     },
     version = '^1.0.0', -- optional: only update when a new 1.x version is released
   },
-  --]]
+
   {
     'nvimtools/none-ls.nvim',
     event = 'VeryLazy',
     config = function()
       local null_ls = require 'null-ls'
       local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
-
+      local cfg = os.getenv 'HOME' .. '/.config/clang-format/'
       null_ls.setup {
         sources = {
           null_ls.builtins.formatting.clang_format.with {
-            extra_args = { '--style', '{IndentWidth: 4}' },
+            -- My config:
+            extra_args = {
+              '--style',
+              '{BasedOnStyle: LLVM, BreakBeforeBraces: Attach, '
+                .. 'IndentWidth: 4, TabWidth: 4, UseTab: Never, ColumnLimit: 100, '
+                .. 'IndentAccessModifiers: false, AccessModifierOffset: -4, '
+                .. 'AllowShortFunctionsOnASingleLine: Empty, '
+                .. 'BraceWrapping: {SplitEmptyFunction: false}}',
+            },
+            --[[ 
+            -- Linux config:
+            extra_args = {
+              '--style=file',
+              '--assume-filename=' .. cfg .. 'torvalds/dummy.cpp', -- Torvalds
+            },
+            --]]
           },
         },
         on_attach = function(client, bufnr)
