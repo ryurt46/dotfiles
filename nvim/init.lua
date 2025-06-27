@@ -328,7 +328,6 @@ require('lazy').setup({
     },
     version = '^1.0.0', -- optional: only update when a new 1.x version is released
   },
-
   {
     'nvimtools/none-ls.nvim',
     event = 'VeryLazy',
@@ -336,18 +335,24 @@ require('lazy').setup({
       local null_ls = require 'null-ls'
       local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
       local cfg = os.getenv 'HOME' .. '/.config/clang-format/'
-      null_ls.setup {
-        sources = {
-          null_ls.builtins.formatting.clang_format.with {
-            -- My config:
-            extra_args = {
-              '--style',
-              '{BasedOnStyle: LLVM, BreakBeforeBraces: Attach, '
-                .. 'IndentWidth: 4, TabWidth: 4, UseTab: Never, ColumnLimit: 100, '
-                .. 'IndentAccessModifiers: false, AccessModifierOffset: -4, '
-                .. 'AllowShortFunctionsOnASingleLine: Empty, '
-                .. 'BraceWrapping: {SplitEmptyFunction: false}}',
-            },
+
+      local function clang_format_args()
+        -- Kolla om det finns en .clang-format i projektets rot
+        local root = vim.fn.getcwd()
+        local found = vim.fn.glob(root .. '/.clang-format')
+
+        if found ~= '' then
+          -- projektet har egen clang-format
+          return { '--style=file' }
+        else
+          -- använd din egen stil
+          return {
+            '--style',
+            '{BasedOnStyle: LLVM, BreakBeforeBraces: Attach, '
+              .. 'IndentWidth: 4, TabWidth: 4, UseTab: Never, ColumnLimit: 100, '
+              .. 'IndentAccessModifiers: false, AccessModifierOffset: -4, '
+              .. 'AllowShortFunctionsOnASingleLine: Empty, '
+              .. 'BraceWrapping: {SplitEmptyFunction: false}}',
             --[[ 
             -- Linux config:
             extra_args = {
@@ -355,6 +360,14 @@ require('lazy').setup({
               '--assume-filename=' .. cfg .. 'torvalds/dummy.cpp', -- Torvalds
             },
             --]]
+          }
+        end
+      end
+
+      null_ls.setup {
+        sources = {
+          null_ls.builtins.formatting.clang_format.with {
+            extra_args = clang_format_args,
           },
         },
         on_attach = function(client, bufnr)
