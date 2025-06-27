@@ -337,15 +337,12 @@ require('lazy').setup({
       local cfg = os.getenv 'HOME' .. '/.config/clang-format/'
 
       local function clang_format_args()
-        -- Kolla om det finns en .clang-format i projektets rot
         local root = vim.fn.getcwd()
         local found = vim.fn.glob(root .. '/.clang-format')
 
         if found ~= '' then
-          -- projektet har egen clang-format
           return { '--style=file' }
         else
-          -- använd din egen stil
           return {
             '--style',
             '{BasedOnStyle: LLVM, BreakBeforeBraces: Attach, '
@@ -405,7 +402,6 @@ require('lazy').setup({
       require('gitsigns').setup()
     end,
   },
-
   {
     'nvimdev/dashboard-nvim',
     event = 'VimEnter',
