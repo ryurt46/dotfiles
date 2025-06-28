@@ -1,8 +1,15 @@
 # Important things
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
+
 ZSH_THEME="robbyrussell"
+ZSH_AUTOSUGGEST_STRATEGY=(completion history)
+
 #setopt PROMPT_SUBST
-plugins=(git)
+plugins=(
+    git
+#    zsh-autosuggestions
+#    zsh-syntax-highlighting
+)
 
 # Git prompt
 parse_git_branch() {
@@ -50,6 +57,7 @@ alias la='ls -A'
 alias lal='ls -al'
 alias lt='ls -lt'
 alias ltr='ls -ltr'
+alias lltr='l -ltr'
 alias bat='batcat'
 
 # Binds
@@ -66,4 +74,4 @@ export PATH=$GOPATH/bin:$PATH
 export PATH=/usr/local/go/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
 
-
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
