@@ -2,6 +2,21 @@
 vim.g.have_nerd_font = true
 vim.deprecate = function() end
 
+-- Git blame on current line
+vim.api.nvim_set_keymap('n', '<A-å>', ':Gitsigns toggle_current_line_blame<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<A-ä>', ':Gitsigns blame<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<A-ö>', ':Gitsigns preview_hunk_inline<CR>', { noremap = true, silent = true })
+vim.cmd [[
+  hi GitSignsAdd       guifg=#00ff00 guibg=#003300 ctermfg=Green ctermbg=Green
+  hi GitSignsAddInline guifg=#00ff00 guibg=#003300 ctermfg=Green ctermbg=Green
+
+  hi GitSignsChange       guifg=#ffff00 guibg=#333300 ctermfg=Yellow ctermbg=Yellow
+  hi GitSignsChangeInline guifg=#ffff00 guibg=#333300 ctermfg=Yellow ctermbg=Yellow
+
+  hi GitSignsDelete       guifg=#ff0000 guibg=#330000 ctermfg=Red ctermbg=Red
+  hi GitSignsDeleteInline guifg=#ff0000 guibg=#330000 ctermfg=Red ctermbg=Red
+]]
+
 -- Makes it "full screen"
 vim.api.nvim_create_autocmd({ 'UIEnter', 'ColorScheme' }, {
   callback = function()
@@ -16,17 +31,6 @@ vim.api.nvim_create_autocmd({ 'UIEnter', 'ColorScheme' }, {
 vim.api.nvim_create_autocmd('UILeave', {
   callback = function()
     io.write '\027]111\027\\'
-  end,
-})
-
--- Golang things
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'go',
-  callback = function()
-    vim.opt_local.tabstop = 4
-    vim.opt_local.shiftwidth = 4
-    vim.opt_local.softtabstop = 4
-    vim.opt_local.expandtab = false -- Ensure tabs are used instead of spaces
   end,
 })
 
@@ -349,7 +353,8 @@ require('lazy').setup({
               .. 'IndentWidth: 4, TabWidth: 4, UseTab: Never, ColumnLimit: 100, '
               .. 'IndentAccessModifiers: false, AccessModifierOffset: -4, '
               .. 'AllowShortFunctionsOnASingleLine: Empty, '
-              .. 'BraceWrapping: {SplitEmptyFunction: false}}',
+              .. 'BraceWrapping: {SplitEmptyFunction: false}, '
+              .. 'PointerAlignment: Left}',
             --[[ 
             -- Linux config:
             extra_args = {
@@ -1315,7 +1320,6 @@ require('lazy').setup({
   --},
 
   ----- MOLOKAI
-  --[[
   {
     -- Use the Molokai colorscheme
     'tomasr/molokai',
@@ -1324,7 +1328,6 @@ require('lazy').setup({
       vim.cmd.colorscheme 'molokai'
     end,
   },
-  ]]
   ----- ONE DARK
   --[[ 
   {
@@ -1378,7 +1381,7 @@ require('lazy').setup({
     end,
   },
     ]]
-
+  --[[
   {
     'tomasiser/vim-code-dark',
     priority = 1000,
@@ -1387,6 +1390,7 @@ require('lazy').setup({
       vim.cmd.colorscheme 'codedark'
     end,
   },
+]]
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },

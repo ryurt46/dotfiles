@@ -1,6 +1,6 @@
 # Important things
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
-
+export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 ZSH_AUTOSUGGEST_STRATEGY=(completion history)
 
@@ -48,6 +48,7 @@ NEWLINE=$'\n'
 #Aliases
 alias emacs="emacs -nw"
 alias v="nvim"
+alias vim="nvim"
 alias python="python3"
 alias py="python3"
 alias ex="exit"
@@ -59,6 +60,7 @@ alias lt='ls -lt'
 alias ltr='ls -ltr'
 alias lltr='l -ltr'
 alias bat='batcat'
+alias ff='fastfetch'
 
 # Binds
 bindkey "^H"      backward-kill-word  # Ctrl + <backspace>
@@ -68,10 +70,9 @@ bindkey "^[^?"    backward-kill-word  # Alt + <backspace>
 export TERM="xterm-256color"
 export PATH="/usr/local/bin:$PATH"
 export EDITOR=/usr/bin/nvim
-#export BROWSER=firefox
-export GOPATH=/usr/local/gopath
-export PATH=$GOPATH/bin:$PATH
-export PATH=/usr/local/go/bin:$PATH
+export BROWSER=firefox
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:/usr/local/go/bin:$HOME/.local/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
