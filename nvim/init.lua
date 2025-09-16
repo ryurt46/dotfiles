@@ -208,8 +208,16 @@ vim.opt.scrolloff = 10
 vim.keymap.set('x', 'J', ":move '>+1<CR>gv=gv")
 vim.keymap.set('x', 'K', ":move '<-2<CR>gv=gv")
 
--- Show diagnostic
-vim.keymap.set('n', '<F3>', vim.diagnostic.goto_next, { desc = 'Nästa diagnostic' })
+-- Toggle diagnostics
+local diagnostics_hidden = false
+vim.keymap.set('n', '<A-F3>', function()
+  diagnostics_hidden = not diagnostics_hidden
+  if diagnostics_hidden then
+    vim.diagnostic.hide()
+  else
+    vim.diagnostic.show()
+  end
+end, { desc = 'Toggle diagnostics' })
 
 -- Gå till föregående diagnostic (F2)
 vim.keymap.set('n', '<F2>', vim.diagnostic.goto_prev, { desc = 'Föregående diagnostic' })
