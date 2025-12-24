@@ -40,27 +40,6 @@ return {
     },
   },
 
-  -- Go adapter
-  {
-    'leoluz/nvim-dap-go',
-    ft = 'go',
-    dependencies = 'mfussenegger/nvim-dap',
-    config = function()
-      require('dap-go').setup()
-    end,
-  },
-
-  -- C# / .NET adapter
-  {
-    'nicholasmata/nvim-dap-cs',
-    dependencies = { 'mfussenegger/nvim-dap' },
-    config = function()
-      require('dap-cs').setup {
-        netcoredbg_path = '/opt/netcoredbg/netcoredbg',
-      }
-    end,
-  },
-
   -- C/C++ DAP via codelldb
   {
     'rcarriga/nvim-dap', -- codelldb använder nvim-dap

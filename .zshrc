@@ -2,11 +2,13 @@
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
-ZSH_AUTOSUGGEST_STRATEGY=(completion history)
+CASE_SENSITIVE="false"
+#ZSH_AUTOSUGGEST_STRATEGY=(completion history)
 
 #setopt PROMPT_SUBST
 plugins=(
     git
+    colored-man-pages
 #    zsh-autosuggestions
 #    zsh-syntax-highlighting
 )
@@ -48,7 +50,7 @@ NEWLINE=$'\n'
 #Aliases
 alias emacs="emacs -nw"
 alias v="nvim"
-alias vim="nvim"
+#alias vim="nvim"
 alias python="python3"
 alias py="python3"
 alias ex="exit"
@@ -61,6 +63,7 @@ alias ltr='ls -ltr'
 alias lltr='l -ltr'
 alias bat='batcat'
 alias ff='fastfetch'
+alias cljrepl="clj -Sdeps '{:deps {nrepl/nrepl {:mvn/version \"1.0.0\"} cider/cider-nrepl {:mvn/version \"0.42.1\"}}}' -M -m nrepl.cmdline --middleware '[\"cider.nrepl/cider-middleware\"]' --interactive";
 
 # Binds
 bindkey "^H"      backward-kill-word  # Ctrl + <backspace>
@@ -75,4 +78,5 @@ export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:/usr/local/go/bin:$HOME/.local/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+#

@@ -1,7 +1,6 @@
 -- lua/plugins/colors.lua
 return {
   ----- MOLOKAI
-  --[[
   {
     'tomasr/molokai',
     priority = 1000,
@@ -9,10 +8,22 @@ return {
       vim.cmd.colorscheme 'molokai'
     end,
   },
-  ]]
+      --[[
 
+{
+  "navarasu/onedark.nvim",
+  priority = 1000, -- make sure to load this before all the other start plugins
+  config = function()
+    require('onedark').setup {
+      style = 'cool'
+    }
+    -- Enable theme
+    require('onedark').load()
+  end
+}
+    ]]
+ --[[
   ----- ONE DARK
-  --[[
   {
     'olimorris/onedarkpro.nvim',
     priority = 1000,
@@ -20,8 +31,7 @@ return {
       vim.cmd.colorscheme 'onedark'
     end,
   },
-  ]]
-
+]]
   ---- ROSE PINE
   --[[
   {
@@ -41,9 +51,10 @@ return {
       vim.cmd.colorscheme 'dracula'
     end,
   },
-  ]]
+  
 
   --- VSCODE DARK (aktivt tema)
+  --[[
   {
     'Mofiqul/vscode.nvim',
     priority = 1000,
@@ -51,7 +62,7 @@ return {
       vim.cmd.colorscheme 'vscode'
     end,
   },
-
+    ]]
   --- HEMISU
   --[[
   {

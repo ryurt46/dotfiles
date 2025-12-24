@@ -1,6 +1,12 @@
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
+-- Move line up and dowwn
+map("n", "<A-j>", ":m .+1<CR>==", opts) -- move line up(n)
+map("n", "<A-k>", ":m .-2<CR>==", opts) -- move line down(n)
+map("v", "<A-j>", ":m '>+1<CR>gv=gv", opts) -- move line up(v)
+map("v", "<A-k>", ":m '<-2<CR>gv=gv", opts) -- move line down(v)
+
 -- GitSigns
 map('n', '<A-å>', ':Gitsigns toggle_current_line_blame<CR>', opts)
 map('n', '<A-ä>', ':Gitsigns blame<CR>', opts)
@@ -15,9 +21,20 @@ map('n', '<M-d>', ':BufferClose<CR>', opts)
 -- Toggle barbar visibility
 map('n', '<A-->', ':lua vim.opt.showtabline = (vim.opt.showtabline:get() == 2 and 0 or 2)<CR>', opts)
 
--- Diagnostics
-map('n', '<A-F3>', ':lua vim.diagnostic.hide()<CR>', opts)
-map('n', '<M-F3>', ':lua vim.diagnostic.hide()<CR>', opts)
+-- Diagnostics toggle
+local diagnostics_hidden = false
+local function toggle_diagnostics()
+  diagnostics_hidden = not diagnostics_hidden
+  if diagnostics_hidden then
+    vim.diagnostic.hide()
+  else
+    vim.diagnostic.show()
+  end
+end
+
+-- Keymaps
+vim.keymap.set('n', '<F3>', toggle_diagnostics, { desc = 'Toggle diagnostics' })
+vim.keymap.set('n', '<A-F3>', toggle_diagnostics, { desc = 'Toggle diagnostics (AltGr)' })
 map('n', '<F2>', ':lua vim.diagnostic.goto_prev()<CR>', opts)
 map('n', '<leader>q', ':lua vim.diagnostic.setloclist()<CR>', opts)
 
@@ -51,7 +68,7 @@ map('x', 'K', ":move '<-2<CR>gv=gv", opts)
 vim.api.nvim_create_autocmd('BufReadPost', {
   callback = function()
     local bufnr = vim.api.nvim_get_current_buf()
-    local gs = require 'gitsigns'
+    local gs = require('gitsigns')
 
     local function bmap(mode, lhs, rhs, desc)
       vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
@@ -60,27 +77,27 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     -- Navigation
     bmap('n', ']c', function()
       if vim.wo.diff then
-        vim.cmd 'normal! ]c'
+        vim.cmd('normal! ]c')
       else
-        gs.nav_hunk 'next'
+        gs.nav_hunk('next')
       end
     end, 'Jump to next git change')
 
     bmap('n', '[c', function()
       if vim.wo.diff then
-        vim.cmd 'normal! [c'
+        vim.cmd('normal! [c')
       else
-        gs.nav_hunk 'prev'
+        gs.nav_hunk('prev')
       end
     end, 'Jump to previous git change')
 
     -- Actions (visual mode)
     bmap('v', '<leader>hs', function()
-      gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+      gs.stage_hunk { vim.fn.line('.'), vim.fn.line('v') }
     end, 'Git stage hunk')
 
     bmap('v', '<leader>hr', function()
-      gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+      gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') }
     end, 'Git reset hunk')
 
     -- Actions (normal mode)
@@ -92,9 +109,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     bmap('n', '<leader>hp', gs.preview_hunk, 'Git preview hunk')
     bmap('n', '<leader>hb', gs.blame_line, 'Git blame line')
     bmap('n', '<leader>hd', gs.diffthis, 'Git diff against index')
-    bmap('n', '<leader>hD', function()
-      gs.diffthis '@'
-    end, 'Git diff against last commit')
+    bmap('n', '<leader>hD', function() gs.diffthis('@') end, 'Git diff against last commit')
 
     -- Toggles
     bmap('n', '<leader>tb', gs.toggle_current_line_blame, 'Toggle git blame line')
@@ -121,8 +136,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local nmap = function(lhs, rhs, desc)
       vim.keymap.set('n', lhs, rhs, { buffer = buf, desc = 'LSP: ' .. desc })
     end
-
-    nmap('gd', require('telescope.builtin').lsp_definitions, 'Goto Definition')
+    --nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+    nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
     nmap('gr', require('telescope.builtin').lsp_references, 'Goto References')
     nmap('gI', require('telescope.builtin').lsp_implementations, 'Goto Implementation')
     nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type Definition')
@@ -153,36 +169,16 @@ local function telescope_map(lhs, rhs, desc)
   end, { desc = desc })
 end
 
-telescope_map('<leader>sh', function(builtin)
-  builtin.help_tags()
-end, '[S]earch [H]elp')
-telescope_map('<leader>sk', function(builtin)
-  builtin.keymaps()
-end, '[S]earch [K]eymaps')
-telescope_map('<leader>sf', function(builtin)
-  builtin.find_files()
-end, '[S]earch [F]iles')
-telescope_map('<leader>ss', function(builtin)
-  builtin.builtin()
-end, '[S]earch [S]elect Telescope')
-telescope_map('<leader>sw', function(builtin)
-  builtin.grep_string()
-end, '[S]earch current [W]ord')
-telescope_map('<leader>sg', function(builtin)
-  builtin.live_grep()
-end, '[S]earch by [G]rep')
-telescope_map('<leader>sd', function(builtin)
-  builtin.diagnostics()
-end, '[S]earch [D]iagnostics')
-telescope_map('<leader>sr', function(builtin)
-  builtin.resume()
-end, '[S]earch [R]esume')
-telescope_map('<leader>s.', function(builtin)
-  builtin.oldfiles()
-end, '[S]earch Recent Files')
-telescope_map('<leader><leader>', function(builtin)
-  builtin.buffers()
-end, 'Find existing buffers')
+telescope_map('<leader>sh', function(builtin) builtin.help_tags() end, '[S]earch [H]elp')
+telescope_map('<leader>sk', function(builtin) builtin.keymaps() end, '[S]earch [K]eymaps')
+telescope_map('<leader>sf', function(builtin) builtin.find_files() end, '[S]earch [F]iles')
+telescope_map('<leader>ss', function(builtin) builtin.builtin() end, '[S]earch [S]elect Telescope')
+telescope_map('<leader>sw', function(builtin) builtin.grep_string() end, '[S]earch current [W]ord')
+telescope_map('<leader>sg', function(builtin) builtin.live_grep() end, '[S]earch by [G]rep')
+telescope_map('<leader>sd', function(builtin) builtin.diagnostics() end, '[S]earch [D]iagnostics')
+telescope_map('<leader>sr', function(builtin) builtin.resume() end, '[S]earch [R]esume')
+telescope_map('<leader>s.', function(builtin) builtin.oldfiles() end, '[S]earch Recent Files')
+telescope_map('<leader><leader>', function(builtin) builtin.buffers() end, 'Find existing buffers')
 
 -- Fuzzy search in current buffer
 telescope_map('<leader>/', function(builtin)
@@ -191,10 +187,25 @@ end, '[/] Fuzzily search in current buffer')
 
 -- Live grep in open files
 telescope_map('<leader>s/', function(builtin)
-  builtin.live_grep { grep_open_files = true, prompt_title = 'Live Grep in Open Files' }
+  builtin.live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files' })
 end, '[S]earch [/] in Open Files')
 
 -- Search Neovim config files
 telescope_map('<leader>sn', function(builtin)
-  builtin.find_files { cwd = vim.fn.stdpath 'config' }
+  builtin.find_files({ cwd = vim.fn.stdpath('config') })
 end, '[S]earch [N]eovim files')
+
+-- Copying
+
+telescope_map('<localleader>yp', function()
+  vim.fn.setreg('+', vim.fn.expand('%:p:.'))
+end, '[Y]ank [P]ath')
+
+telescope_map('<localleader>yd', function()
+  vim.fn.setreg('+', vim.fn.expand('%:h'))
+end, '[Y]ank [D]irectory')
+
+telescope_map('<localleader>yf', function()
+  vim.fn.setreg('+', vim.fn.expand('%:t:r'))
+end, '[Y]ank [F]ile name')
+

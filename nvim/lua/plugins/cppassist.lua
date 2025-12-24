@@ -1,6 +1,7 @@
 return {
   'Kohirus/cppassist.nvim',
-  lazy = false, -- ladda direkt
+  ft = { 'c', 'cpp', 'cc', 'h', 'hpp' }, -- laddas bara för dessa filtyper
+  cmd = { 'CppassistSwitchSourceHeader', 'CppassistGotoHeader' }, -- om du vill köra kommandona direkt
   config = function()
     require('cppassist').setup {
       switch_sh = {
@@ -26,3 +27,4 @@ return {
     }
   end,
 }
+

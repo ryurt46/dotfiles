@@ -28,6 +28,10 @@ return {
           '--clang-tidy',
           '--completion-style=detailed',
           '--cross-file-rename',
+          '--inlay-hints',
+          '--fallback-style=none',
+          '--std=c++20',
+          '--compile-commands-dir=build', -- <--- lägg till denna rad
         },
         on_attach = function(client, bufnr)
           local nmap = function(keys, func, desc)
@@ -36,6 +40,12 @@ return {
           nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
           nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
         end,
+        capabilities = capabilities,
+      },
+      clojure_lsp = {
+        cmd = { 'clojure-lsp' },
+        filetypes = { 'clojure', 'edn', 'clojurescript' },
+        root_dir = require('lspconfig.util').root_pattern('deps.edn', 'project.clj', 'shadow-cljs.edn', '.git'),
         capabilities = capabilities,
       },
       jdtls = {},
@@ -63,6 +73,7 @@ return {
       'jdtls',
       'pyright',
       'rust-analyzer',
+      'clojure-lsp',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -140,7 +151,14 @@ return {
         end
       end,
     })
-
+    vim.api.nvim_create_autocmd('LspAttach', {
+      callback = function(ev)
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client and client.server_capabilities.inlayHintProvider then
+          vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+        end
+      end,
+    })
     -- Diagnostic config
     vim.diagnostic.config {
       severity_sort = true,

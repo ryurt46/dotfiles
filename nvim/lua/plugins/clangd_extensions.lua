@@ -4,8 +4,9 @@ return {
   config = function()
     require('clangd_extensions').setup {
       inlay_hints = {
-        only_current_line = true,
-        only_current_line_autocmd = { 'CursorHold' },
+        only_current_line = false,
+        -- only_current_line_autocmd = { 'CursorHold' },
+          auto = true,                -- aktivera automatiskt
       },
     }
   end,
