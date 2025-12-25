@@ -5,7 +5,7 @@ if not vim.loop.fs_stat(lazypath) then
     'clone',
     '--filter=blob:none',
     'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
+    '--branch=stable', -- senaste stabila releasen
     lazypath,
   }
 end
@@ -15,14 +15,13 @@ require 'core.options'
 require 'core.keymaps'
 require 'core.snippets'
 require 'core.ui'
+
 require('lazy').setup {
   defaults = { lazy = true },
 
-  -- Grundläggande plugins
   'tpope/vim-sleuth',
   'NMAC427/guess-indent.nvim',
 
-  -- Plugins organiserade i moduler
   { import = 'plugins.autopairs' },
   { import = 'plugins.gitsigns' },
   { import = 'plugins.color' },
@@ -33,7 +32,7 @@ require('lazy').setup {
   { import = 'plugins.telescope' },
   { import = 'plugins.todo' },
   { import = 'plugins.formatters' },
-  -- {import = 'plugins.indent_line' },
+  -- { import = 'plugins.indent_line' },
   { import = 'plugins.fugitive' },
   { import = 'plugins.neo-tree' },
   { import = 'plugins.nvim-cmp' },
@@ -42,9 +41,9 @@ require('lazy').setup {
   { import = 'plugins.jdtls' },
   { import = 'plugins.cppassist' },
   { import = 'plugins.clangd_extensions' },
-  --  { import = 'plugins.lint' },
-  --  { import = 'plugins.go' },
-  --  { import = 'plugins.none-ls' },
+  -- { import = 'plugins.lint' },
+  -- { import = 'plugins.go' },
+  { import = 'plugins.none-ls' },
   { import = 'plugins.web-devicons' },
   { import = 'plugins.dashboard' },
   { import = 'plugins.which-key' },
@@ -55,5 +54,4 @@ require('lazy').setup {
   { import = 'plugins.neogit' },
   { import = 'plugins.gdb' },
   { import = 'plugins.sleuth' },
-  -- { import = 'plugins.amazonq'},
 }
