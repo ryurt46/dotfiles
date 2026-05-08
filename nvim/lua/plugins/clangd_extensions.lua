@@ -6,7 +6,7 @@ return {
       inlay_hints = {
         only_current_line = false,
         -- only_current_line_autocmd = { 'CursorHold' },
-          auto = true,                -- aktivera automatiskt
+        auto = true, -- aktivera automatiskt
       },
     }
   end,

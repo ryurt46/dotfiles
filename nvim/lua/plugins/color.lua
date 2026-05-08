@@ -1,5 +1,39 @@
 -- lua/plugins/colors.lua
 return {
+  -- MOLOKAI BLACK BG
+  --[[
+  {
+    'tomasr/molokai',
+    priority = 1000,
+    init = function()
+      vim.cmd.colorscheme 'molokai'
+
+      -- Tvinga svart bakgrund
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'black' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'black' })
+      vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'black' })
+      vim.api.nvim_set_hl(0, 'LineNr', { bg = 'black' })
+      vim.api.nvim_set_hl(0, 'FoldColumn', { bg = 'black' })
+      -- Ljusa upp radnummer
+      vim.api.nvim_set_hl(0, 'LineNr', { fg = '#7f7f7f', bg = 'black' })
+      vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#e6db74', bg = 'black', bold = true })
+      vim.api.nvim_set_hl(0, 'MatchParen', {
+        fg = 'NONE',
+        bg = '#3a3a3a',
+        bold = true,
+      })
+    end,
+  },
+ ]]
+  {
+    -- add dracula
+    'binhtran432k/dracula.nvim',
+    priority = 1000,
+    init = function()
+      vim.cmd.colorscheme 'dracula'
+    end,
+  },
+  --[[
   ----- MOLOKAI
   {
     'tomasr/molokai',
@@ -8,21 +42,22 @@ return {
       vim.cmd.colorscheme 'molokai'
     end,
   },
-      --[[
 
-{
-  "navarasu/onedark.nvim",
-  priority = 1000, -- make sure to load this before all the other start plugins
-  config = function()
-    require('onedark').setup {
-      style = 'cool'
-    }
-    -- Enable theme
-    require('onedark').load()
-  end
-}
-    ]]
- --[[
+  {
+    'navarasu/onedark.nvim',
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require('onedark').setup {
+        style = 'deep',
+        term_colors = true,
+      }
+      -- Enable theme
+      require('onedark').load()
+    end,
+  },
+     ]]
+
+  --[[
   ----- ONE DARK
   {
     'olimorris/onedarkpro.nvim',
@@ -73,7 +108,6 @@ return {
       vim.cmd.colorscheme 'hemisu'
     end,
   },
-  ]]
 
   --[[
   {
@@ -85,4 +119,12 @@ return {
     end,
   },
   ]]
+  --[[
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+      ]]
 }

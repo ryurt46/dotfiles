@@ -48,9 +48,9 @@ NEWLINE=$'\n'
 #RPROMPT=""
 
 #Aliases
-alias emacs="emacs -nw"
 alias v="nvim"
 #alias vim="nvim"
+alias lg="lazygit"
 alias python="python3"
 alias py="python3"
 alias ex="exit"

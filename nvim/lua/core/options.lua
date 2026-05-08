@@ -23,10 +23,10 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
 vim.g.barbar_auto_setup = false
--- vim.o.shiftwidth = 4   -- antal spaces per indent
--- vim.o.tabstop = 4      -- tabbar motsvarar 4 spaces
--- vim.o.softtabstop = 4  -- styr backspace/tabb i insert mode
---  vim.o.expandtab = true  -- använd spaces istället för tabs
+vim.o.shiftwidth = 4 -- antal spaces per indent
+vim.o.tabstop = 4 -- tabbar motsvarar 4 spaces
+vim.o.softtabstop = 4 -- styr backspace/tabb i insert mode
+vim.o.expandtab = true -- använd spaces istället för tabs
 
 -- Dont move cursor on :w
 vim.api.nvim_create_autocmd('BufWritePre', {

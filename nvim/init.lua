@@ -9,22 +9,26 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   }
 end
+
 vim.opt.rtp:prepend(lazypath)
+
+vim.opt.termguicolors = true
+vim.opt.background = 'dark'
+vim.g.one_allow_italics = 1
+vim.cmd.colorscheme 'dracula'
 
 require 'core.options'
 require 'core.keymaps'
 require 'core.snippets'
 require 'core.ui'
-
 require('lazy').setup {
   defaults = { lazy = true },
-
+  -- grundläggande plugins
   'tpope/vim-sleuth',
-  'NMAC427/guess-indent.nvim',
-
+  'nmac427/guess-indent.nvim',
   { import = 'plugins.autopairs' },
   { import = 'plugins.gitsigns' },
-  { import = 'plugins.color' },
+  --  { import = 'plugins.color' },
   { import = 'plugins.ui' },
   { import = 'plugins.lualine' },
   { import = 'plugins.mini' },
@@ -54,4 +58,5 @@ require('lazy').setup {
   { import = 'plugins.neogit' },
   { import = 'plugins.gdb' },
   { import = 'plugins.sleuth' },
+  { import = 'plugins.cpp-tools' },
 }

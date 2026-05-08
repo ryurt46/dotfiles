@@ -25,17 +25,19 @@ return {
         return {
           '--style',
           [[{
-          BreakBeforeBraces: Allman,
+          BreakBeforeBraces: Attach,
           IndentWidth: 4,
           TabWidth: 4,
+          AccessModifierOffset: -4,
           UseTab: Never,
-          ColumnLimit: 0,
+          ColumnLimit: 100,
           ReflowComments: false,
           AllowShortFunctionsOnASingleLine: false,
           PointerAlignment: Left,
           SpaceBeforeParens: ControlStatements,
           SpacesInParentheses: false,
           IndentCaseLabels: true,
+          AlignConsecutiveAssignments: true,
           BraceWrapping: {
             AfterClass: true,
             AfterControlStatement: true,
@@ -64,18 +66,19 @@ return {
         },
       },
       on_attach = function(client, bufnr)
-        if client.supports_method 'textDocument/formatting' then
+        if client:supports_method 'textDocument/formatting' then
           -- Keymap: format entire buffer
           vim.keymap.set('n', '<leader>cf', function()
             vim.lsp.buf.format { bufnr = bufnr, async = true }
           end, { buffer = bufnr, desc = 'Format with clang-format' })
 
-          -- Keymap: format visual
+          --[[  -- Keymap: format visual
           vim.keymap.set('v', '<leader>cf', function()
             vim.lsp.buf.range_formatting({}, vim.fn.getpos "'<", vim.fn.getpos "'>")
           end, { buffer = bufnr, desc = 'Format selection with clang-format' })
+          ]]
 
-          -- Auto-format on save
+          -- Auto-format on save - Remove this to format on keybinds
           vim.api.nvim_create_autocmd('BufWritePre', {
             buffer = bufnr,
             callback = function()
