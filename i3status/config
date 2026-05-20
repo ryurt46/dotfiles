@@ -22,7 +22,7 @@ order += "load"
 order += "memory"
 order += "tztime local"
 order += "t"
-
+order += "volume master"
 wireless _first_ {
         format_up = "W: (%quality at %essid) %ip"
         format_down = "W: down"
@@ -60,4 +60,12 @@ tztime local {
 cpu_temperature 0 {
     format = "CPU: %degrees °C"
     path = "/sys/class/hwmon/hwmon3/temp1_input"
+}
+
+volume master {
+        format = "♪: %volume"
+        format_muted = "♪: muted (%volume)"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
 }
