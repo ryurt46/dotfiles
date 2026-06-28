@@ -1,7 +1,7 @@
 # Important things
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
+#ZSH_THEME="robbyrussell"
 CASE_SENSITIVE="false"
 #ZSH_AUTOSUGGEST_STRATEGY=(completion history)
 
@@ -13,18 +13,26 @@ plugins=(
 #    zsh-syntax-highlighting
 )
 
-# Git prompt
-parse_git_branch() {
-    # Check if the directory is inside a git repository
+parse_git_branch_new() {
     if git rev-parse --is-inside-work-tree &>/dev/null; then
-        # Get the current branch name
         branch=$(git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/\1/p')
 
-        # Check for uncommitted changes
         if [[ -n $(git status --porcelain 2> /dev/null) ]]; then
-            echo "── %F{130}‹${branch}*›%f "  # Orange color for branch with uncommitted changes
+            echo "%F{210}‹${branch}*›%f "
         else
-            echo "── %F{130}‹${branch}›%f "  # Orange color for branch without uncommitted changes
+            echo "%F{210}‹${branch}›%f "
+        fi
+    fi
+}
+
+parse_git_branch() {
+    if git rev-parse --is-inside-work-tree &>/dev/null; then
+        branch=$(git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/\1/p')
+
+        if [[ -n $(git status --porcelain 2> /dev/null) ]]; then
+            echo "── %F{130}‹${branch}*›%f "
+        else
+            echo "── %F{130}‹${branch}›%f "
         fi
     fi
 }
@@ -38,6 +46,9 @@ NEWLINE=$'\n'
 # Path uses the system color of blue
 #PROMPT='%B%F{green}%F{green}%B%n@%m%f%b %F{255}── %F{blue}%B%~%f%b $(parse_git_branch)%f%f%b'
 
+PROMPT='%B%F{green}%n%f %B%F{blue}%m%f%b %F{cyan}[%B%~%b%f%F{cyan}]%f $(parse_git_branch_new)%(?.%F{green}.%F{red})$%f '
+
+# Default ubuntu prompt
 #PROMPT='${debian_chroot:+($debian_chroot)}%B%F{green}%n@%m%f:%F{blue}%~%f\$%b '
 
 # Right Prompt 
