@@ -76,7 +76,6 @@ return {
           vim.keymap.set('v', '<leader>cf', function()
             vim.lsp.buf.range_formatting({}, vim.fn.getpos "'<", vim.fn.getpos "'>")
           end, { buffer = bufnr, desc = 'Format selection with clang-format' })
-          ]]
 
           -- Auto-format on save - Remove this to format on keybinds
           vim.api.nvim_create_autocmd('BufWritePre', {
@@ -85,6 +84,7 @@ return {
               vim.lsp.buf.format { bufnr = bufnr, async = false }
             end,
           })
+          ]]
         end
       end,
     }

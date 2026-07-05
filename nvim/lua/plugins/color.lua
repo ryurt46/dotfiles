@@ -26,6 +26,34 @@ return {
   },
  ]]
   {
+    'ownself/dracula-colorful.nvim',
+    priority = 1000,
+    init = function()
+      require('dracula-colorful').setup {
+        transparent_background = false,
+        dim_inactive = false,
+        styles = {
+          comments = { 'italic' },
+          keywords = {},
+          functions = {},
+          parameters = {},
+          fields = {},
+          types = {},
+        },
+        integrations = {
+          cmp = true,
+          blink = true,
+          gitsigns = true,
+          rainbow_delimiters = true,
+          nvimtree = true,
+        },
+      }
+      vim.cmd.colorscheme 'dracula-colorful'
+    end,
+  },
+
+  --[[
+  {
     -- add dracula
     'binhtran432k/dracula.nvim',
     priority = 1000,
@@ -33,7 +61,6 @@ return {
       vim.cmd.colorscheme 'dracula'
     end,
   },
-  --[[
   ----- MOLOKAI
   {
     'tomasr/molokai',

@@ -31,7 +31,7 @@ return {
             'diff',
             colored = true,
             diff_color = {
-              added = { fg = '#094f06' },
+              added = { fg = '#0ED108' },
               modified = { fg = '#eba534' },
               removed = { fg = '#e01010' },
             },

@@ -15,7 +15,6 @@ vim.opt.rtp:prepend(lazypath)
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 vim.g.one_allow_italics = 1
-vim.cmd.colorscheme 'dracula'
 
 require 'core.options'
 require 'core.keymaps'
@@ -28,7 +27,7 @@ require('lazy').setup {
   'nmac427/guess-indent.nvim',
   { import = 'plugins.autopairs' },
   { import = 'plugins.gitsigns' },
-  --  { import = 'plugins.color' },
+  { import = 'plugins.color' },
   { import = 'plugins.ui' },
   { import = 'plugins.lualine' },
   { import = 'plugins.mini' },
@@ -59,4 +58,5 @@ require('lazy').setup {
   { import = 'plugins.gdb' },
   { import = 'plugins.sleuth' },
   { import = 'plugins.cpp-tools' },
+  { import = 'plugins.sticky' },
 }

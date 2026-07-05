@@ -14,7 +14,9 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.inccommand = 'split'
-vim.opt.cursorline = false
+
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = 'number'
 vim.opt.scrolloff = 10
 vim.opt.showtabline = 0
 vim.opt.background = 'dark'
@@ -27,6 +29,9 @@ vim.o.shiftwidth = 4 -- antal spaces per indent
 vim.o.tabstop = 4 -- tabbar motsvarar 4 spaces
 vim.o.softtabstop = 4 -- styr backspace/tabb i insert mode
 vim.o.expandtab = true -- använd spaces istället för tabs
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.cindent = true
 
 -- Dont move cursor on :w
 vim.api.nvim_create_autocmd('BufWritePre', {
