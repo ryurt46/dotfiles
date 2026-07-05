@@ -6,10 +6,14 @@
 # ß
 # If the above line is not correctly displayed, fix your editor first!
 
+
 general {
-        output_format = "i3bar"
-        colors = true
-        interval = 5
+    output_format = "i3bar"
+    colors = true
+    color_good = "#A3BE8C"
+    color_degraded = "#8FBCBB"
+    color_bad = "#4C566A"
+    interval = 5
 }
 
 #order += "ipv6"
@@ -21,7 +25,8 @@ order += "disk /"
 order += "load"
 order += "memory"
 order += "tztime local"
-order += "t"
+#order += "t"
+order += "read_file spotify"
 order += "volume master"
 wireless _first_ {
         format_up = "W: (%quality at %essid) %ip"
@@ -46,13 +51,13 @@ load {
 }
 
 memory {
-        format = "%used | %available"
+        format = " [%used ─ %available] "
         threshold_degraded = "1G"
         format_degraded = "MEMORY < %available"
 }
 
 tztime local {
-        format = "%a %d %B %H:%M"
+        format = "🇸🇪 %a %d %B %H:%M"
         # Old format
         #format = "%Y-%m-%d %H:%M:%S"
 }
@@ -60,6 +65,10 @@ tztime local {
 cpu_temperature 0 {
     format = "CPU: %degrees °C"
     path = "/sys/class/hwmon/hwmon3/temp1_input"
+}
+
+read_file spotify {
+    path = "~/.cache/spotify.txt"
 }
 
 volume master {
