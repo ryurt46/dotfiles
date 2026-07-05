@@ -91,3 +91,5 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 #
+
+export PATH=$PATH:/home/ryurt/.spicetify
