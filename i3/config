@@ -236,3 +236,6 @@ bindsym $mod+Shift+h exec --no-startup-id i3lock -c 000000
 
 
 exec_always --no-startup-id ~/.config/scripts/spotify.sh
+
+bindsym $mod+Shift+b exec gnome-terminal -- bash -c "~/.config/scripts/btselect.sh"
+bindsym $mod+Shift+w exec gnome-terminal -- bash -c "~/.config/scripts/wifiselect.sh"
