@@ -1,0 +1,25 @@
+# Default colors
+
+# Colors (One Dark - https://github.com/atom/atom/tree/master/packages/one-dark-syntax)
+[colors.primary]
+background = '#282c34'
+foreground = '#dfdfdf'
+
+# Normal colors
+[colors.normal]
+black   = '#5c6370'
+red     = '#e06c75'
+green   = '#98c379'
+yellow  = '#e5c07b'
+blue    = '#61afef'
+magenta = '#c678dd'
+cyan    = '#56b6c2'
+white   = '#828997'
+
+[font.normal]
+family = "Comic code"
+#family = "Hack"
+style = "Regular"
+
+[font]
+size = 11

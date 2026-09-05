@@ -23,8 +23,8 @@ default_border pixel 1
 default_floating_border pixel 1
 
 font pango:Ubuntu Mono 11.5
-gaps inner 7
-gaps outer 2
+#gaps inner 7
+#gaps outer 2
 smart_borders no_gaps
 hide_edge_borders smart_no_gaps
 popup_during_fullscreen smart
@@ -37,8 +37,8 @@ mode "gaps" {
     bindsym Right gaps outer all plus 2
 
     # RESET TO DEFAULT
-    bindsym 0 gaps inner all set 7; gaps outer all set 2; mode "default"
-    bindsym 1 gaps inner all set 0; gaps outer all set 0; mode "standard"
+    bindsym 0 gaps inner all set 0; gaps outer all set 0; mode "default"
+    bindsym 1 gaps inner all set 7; gaps outer all set 2; mode "standard"
     bindsym Return mode "default"
     bindsym Escape mode "default"
     bindsym Tab mode "default"
@@ -55,7 +55,7 @@ mode "gaps" {
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -182,7 +182,7 @@ mode "resize" {
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-  position bottom
+  position top
   status_command i3status
   tray_output none
   colors {
@@ -220,9 +220,11 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 #background
-exec_always --no-startup-id feh --bg-scale ~/Pictures/wind_bg.jpg
+exec_always --no-startup-id feh --bg-scale ~/Downloads/a_white_light_pole_with_a_jet_trail_in_the_sky.jpg
 
-exec --no-startup-id xrandr --output HDMI-A-2-0 --rotate right --auto --right-of HDMI-0
+exec --no-startup-id xrandr \
+    --output DP-1-0 --mode 1920x1080 --rate 300 --primary \
+    --output HDMI-1-0 --mode 1920x1200 --rate 59.95 --left-of DP-1-0
 
 exec_always --no-startup-id ~/.screenlayout/a.sh
 
@@ -237,5 +239,5 @@ bindsym $mod+Shift+h exec --no-startup-id i3lock -c 000000
 
 exec_always --no-startup-id ~/.config/scripts/spotify.sh
 
-bindsym $mod+Shift+b exec gnome-terminal -- bash -c "~/.config/scripts/btselect.sh"
-bindsym $mod+Shift+w exec gnome-terminal -- bash -c "~/.config/scripts/wifiselect.sh"
+bindsym $mod+shift+b exec alacritty -- bash -c "~/.config/scripts/btselect.sh"
+bindsym $mod+shift+w exec alacritty -- bash -c "~/.config/scripts/wifiselect.sh"
