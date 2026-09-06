@@ -1,62 +1,24 @@
 # Important things
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
 export ZSH="$HOME/.oh-my-zsh"
-#ZSH_THEME="robbyrussell"
 CASE_SENSITIVE="false"
-#ZSH_AUTOSUGGEST_STRATEGY=(completion history)
-
-#setopt PROMPT_SUBST
 plugins=(
     git
     colored-man-pages
-#    zsh-autosuggestions
-#    zsh-syntax-highlighting
 )
 
-parse_git_branch_new() {
-    if git rev-parse --is-inside-work-tree &>/dev/null; then
-        branch=$(git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/\1/p')
+autoload -U colors && colors
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[red]%}‹"
+ZSH_THEME_GIT_PROMPT_SUFFIX="›%{$reset_color%} "
+ZSH_THEME_GIT_PROMPT_DIRTY="*"
+ZSH_THEME_GIT_PROMPT_CLEAN=""
 
-        if [[ -n $(git status --porcelain 2> /dev/null) ]]; then
-            echo "%F{210}‹${branch}*›%f "
-        else
-            echo "%F{210}‹${branch}›%f "
-        fi
-    fi
-}
-
-parse_git_branch() {
-    if git rev-parse --is-inside-work-tree &>/dev/null; then
-        branch=$(git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/\1/p')
-
-        if [[ -n $(git status --porcelain 2> /dev/null) ]]; then
-            echo "── %F{130}‹${branch}*›%f "
-        else
-            echo "── %F{130}‹${branch}›%f "
-        fi
-    fi
-}
-
-NEWLINE=$'\n'
-# Left Prompt 
-
-#PROMPT='%B%F{255}┌ %F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f ${NEWLINE}%F{255}└──╼%f%b '
-#PROMPT='%B%F{255}%F{2}%B%n@%m%f%b %F{255}── %F{25}%B%~%f%b $(parse_git_branch)%f%f%b'
-
-# Path uses the system color of blue
-#PROMPT='%B%F{green}%F{green}%B%n@%m%f%b %F{255}── %F{blue}%B%~%f%b $(parse_git_branch)%f%f%b'
-
-PROMPT='%B%F{green}%n%f %B%F{blue}%m%f%b %F{cyan}[%B%~%b%f%F{cyan}]%f $(parse_git_branch_new)%(?.%F{green}.%F{red})$%f '
-
-# Default ubuntu prompt
-#PROMPT='${debian_chroot:+($debian_chroot)}%B%F{green}%n@%m%f:%F{blue}%~%f\$%b '
-
-# Right Prompt 
-# Time and date
-#RPROMPT="%F{241}%B%D{%A %d %b %H:%M}%f%b"
-
-# Right Prompt - Empty
-#RPROMPT=""
+ps1_user="%{$fg[green]%}%n"
+ps1_host="%{$fg[blue]%}%m"
+ps1_path="%{$fg[cyan]%}[%~]"
+ps1_git='$(git_prompt_info)'
+ps1_suffix="%(?.%{$fg[green]%}.%{$fg[red]%})$%{$reset_color%}"
+PROMPT="%B${ps1_user} ${ps1_host} ${ps1_path}%b ${ps1_git}${ps1_suffix} "
 
 #Aliases
 alias v="nvim"
@@ -79,6 +41,8 @@ alias cljrepl="clj -Sdeps '{:deps {nrepl/nrepl {:mvn/version \"1.0.0\"} cider/ci
 # Binds
 bindkey "^H"      backward-kill-word  # Ctrl + <backspace>
 bindkey "^[^?"    backward-kill-word  # Alt + <backspace>
+bindkey "^[OH" beginning-of-line
+bindkey "^[OF" end-of-line
 
 # Exports
 export TERM="xterm-256color"
