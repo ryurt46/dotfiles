@@ -14,7 +14,7 @@ yellow  = '#e5c07b'
 blue    = '#61afef'
 magenta = '#c678dd'
 cyan    = '#56b6c2'
-white   = '#828997'
+white   = '#ffffff'
 
 [font.normal]
 family = "Comic code"
